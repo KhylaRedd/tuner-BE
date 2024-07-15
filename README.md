@@ -98,9 +98,6 @@ Retrieves a single song by its ID from the database.
 - PostgreSQL
 - SQL (CRUD operations)
 
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
 
 ## License
 
