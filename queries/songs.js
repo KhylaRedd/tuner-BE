@@ -1,10 +1,11 @@
+const songs = require("../controllers/songController");
 const db = require("../db/dbConfig");
 
 
 const addSong = async (song) => {
   try{
     const newSong = await db.one(
-        "INSERT INTO songs (songName, artist, album, duration, is_favorite)VALUES($1, $2,$3, $4, $5)RETURNING *", [song.songname, song.artist, song.album ,song.duration, song.is_favorite], 
+        "INSERT INTO songs (songName, artist, album, duration, is_favorite)VALUES($1, $2,$3, $4, $5) RETURNING *", [song.songname, song.artist, song.album ,song.duration, song.is_favorite], 
     );
     return newSong;
   } catch (error){
@@ -21,7 +22,7 @@ const getAllSongs = async ()=>{
     }
 };
 
-const getSong = async (req,res)=>{
+const getSong = async (id)=>{
     try{
         const oneSong = await db.one("SELECT * FROM songs WHERE id=$1", id)
         return oneSong;
@@ -41,18 +42,21 @@ const deleteSong = async (id) => {
     }
 };
 
-const updateSong = async (id) => {
+const updateSong = async (id, song) => {
     try {
-       const changeSong = await db.one("UPDATE colors SET name=$1, is_favorite=$2 where id=$3 RETURNING *")
-       return changeSong;
+       const changedSong = await db.one(
+        "UPDATE songs SET songname=$1, artist=$2, album=$3, duration=$4, is_favorite=$5 where id=$6 RETURNING *",[song.songname, song.artist, song.album ,song.duration, song.is_favorite,id])
+       return changedSong;
     } catch (error) {
         return error;
     }
 }
+//update
+
 module.exports = {getAllSongs,
                   getSong,
                   addSong,
                   deleteSong,
-                  updateSong
+                  updateSong,
 
 }
